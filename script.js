@@ -27,7 +27,7 @@ const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-d
     let humidityBody = document.querySelector(".humidity-card")
     let windBody = document.querySelector(".wind-card")
 
-    
+
     tempBody.innerHTML = ` <h5 class="card-title">Temperature</h5>
             <h3>${temp}°C</h3>
             <p>Temperature is ${temp}°C</p>
@@ -67,7 +67,7 @@ async function RoorkeeData() {
     let { sunrise, sunset } = data.sys;
 
     let tr = document.querySelector(".Roorkee")
-    tr.innerHTML=`<td><strong>Roorkee</strong></td>
+    tr.innerHTML = `<td><strong>Roorkee</strong></td>
           <td>${data.weather[0]["main"]}</td>
           <td>${feels_like}°C</td>
           <td>${humidity}%</td>
@@ -97,7 +97,7 @@ async function DehradunData() {
     let { sunrise, sunset } = data.sys;
 
     let tr = document.querySelector(".Dehradun")
-    tr.innerHTML=`<td><strong>Dehradun</strong></td>
+    tr.innerHTML = `<td><strong>Dehradun</strong></td>
           <td>${data.weather[0]["main"]}</td>
           <td>${feels_like}°C</td>
           <td>${humidity}%</td>
@@ -128,7 +128,7 @@ async function LudhianaData() {
     let { sunrise, sunset } = data.sys;
 
     let tr = document.querySelector(".Ludhiana")
-    tr.innerHTML=`<td><strong>Ludhiana</strong></td>
+    tr.innerHTML = `<td><strong>Ludhiana</strong></td>
           <td>${data.weather[0]["main"]}</td>
           <td>${feels_like}°C</td>
           <td>${humidity}%</td>
@@ -158,7 +158,7 @@ async function DelhiData() {
     let { sunrise, sunset } = data.sys;
 
     let tr = document.querySelector(".Delhi")
-    tr.innerHTML=`<td><strong>Delhi</strong></td>
+    tr.innerHTML = `<td><strong>Delhi</strong></td>
           <td>${data.weather[0]["main"]}</td>
           <td>${feels_like}°C</td>
           <td>${humidity}%</td>
@@ -169,6 +169,59 @@ async function DelhiData() {
           <td>${temp}°C</td>
           <td>${deg}°</td>
           <td>${speed} km/h</td>`
+  } catch (error) {
+    console.error("The error is " + error);
+
+  }
+}
+async function SearchData() {
+  try {
+
+    let search = document.querySelector('.search')
+    const city = search.value;
+    console.log(city);
+
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`)
+    const data = await response.json()
+    // // console.log(data);
+
+    const formatTime = (timestamp) => {
+      return new Date(timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+    let { temp, temp_min, temp_max, humidity, feels_like } = data.main;
+    let { deg, speed } = data.wind;
+    let { sunrise, sunset } = data.sys;
+
+
+    let tempBody = document.querySelector(".temp-card")
+    let humidityBody = document.querySelector(".humidity-card")
+    let windBody = document.querySelector(".wind-card")
+
+    let head = document.querySelector('.head')
+    head.innerText=`Welcome in ${city}`
+
+    let otherCities = document.querySelector('.other-cities')
+    otherCities.style.display = 'none'
+
+    tempBody.innerHTML = ` <h5 class="card-title">Temperature</h5>
+            <h3>${temp}°C</h3>
+            <p>Temperature is ${temp}°C</p>
+            <p>Min. Temperature is ${temp_min}</p>
+            <p>Max. Temperature is ${temp_max}</p>
+            <button class="btn btn-primary">More Info</button>`
+    humidityBody.innerHTML = ` <h5 class="card-title">Humidity Info</h5>
+            <h3>${humidity}%</h3>
+            <p>Humidity is ${humidity}%</p>
+            <p>Wind Degrees is ${deg}°</p>
+            <p>Feels Like is ${feels_like}°C</p>
+            <button class="btn btn-primary">More Info</button>`
+
+    windBody.innerHTML = `<h5 class="card-title">Wind Info</h5>
+            <h3>${speed} km/h</h3>
+            <p>Wind Speed is ${speed} km/h</p>
+           <p>Sunrise: ${formatTime(sunrise)}</p>
+            <p>Sunset: ${formatTime(sunset)}</p>
+            <button class="btn btn-primary">More Info</button>`
   } catch (error) {
     console.error("The error is " + error);
 
