@@ -198,7 +198,7 @@ async function SearchData() {
     let windBody = document.querySelector(".wind-card")
 
     let head = document.querySelector('.head')
-    head.innerText=`Welcome in ${city}`
+    head.innerText=`Weather in ${city}`
 
     let otherCities = document.querySelector('.other-cities')
     otherCities.style.display = 'none'
